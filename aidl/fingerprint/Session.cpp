@@ -344,7 +344,8 @@ void Session::notify(const fingerprint_msg_t* msg) {
             // don't process vendor messages further since frameworks try to disable
             // udfps display mode on vendor acquired messages but our sensors send a
             // vendor message during processing...
-            if (result != AcquiredInfo::VENDOR) {
+            // process only vendor code 22 which is needed for screen off FOD on laurel_sprout
+            if (result != AcquiredInfo::VENDOR || (result == AcquiredInfo::VENDOR && vendorCode == 22)) {
                 mCb->onAcquired(result, vendorCode);
             }
         } break;
